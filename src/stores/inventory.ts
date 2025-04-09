@@ -3,32 +3,46 @@ import { ref, watch } from "vue";
 import type { Item } from '@/types/Item'
 
 export const useInventoryStore = defineStore("inventory", () => {
-    const items = ref<Item[]>([])
+    const slots = ref<(Item | null)[]>([])
 
     // Загрузка из localStorage
-    const loadItems = () => {
+    const loadSlots = () => {
         const stored = localStorage.getItem("inventory")
-        if (stored) items.value = JSON.parse(stored)
+        if (stored) {
+            slots.value = JSON.parse(stored)
+        } else {
+            slots.value = Array(25).fill(null)
+        }
     }
 
     // Сохранение в localStorage при каждом изменении
-    watch(items, (newItems) => {
-        localStorage.setItem("inventory", JSON.stringify(newItems))
+    watch(slots, (newSlots) => {
+        localStorage.setItem("inventory", JSON.stringify(newSlots))
     }, {deep: true})
 
-    const removeItem = (id: string) => {
-        items.value = items.value.filter(item => item.id === id)
-    }
-
     const setItems = (initialItems: Item[]) => {
-        items.value = initialItems
+        slots.value = Array(25).fill(null);
+        initialItems.forEach((item, index) => {
+            slots.value[index] = item
+        })
     }
 
-    loadItems()
+    const removeItem = (id: string) => {
+        slots.value = slots.value.map(item => item && item.id === id ? null :item)
+    }
+
+    const moveItem = (fromIndex: number, toIndex: number) => {
+        const temp = slots.value[toIndex]
+        slots.value[toIndex] = slots.value[fromIndex]
+        slots.value[fromIndex] = temp
+    }
+
+    loadSlots()
 
     return {
-        items,
-        removeItem,
+        slots,
         setItems,
+        removeItem,
+        moveItem,
     }
 })
