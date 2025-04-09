@@ -2,6 +2,7 @@
 import { onMounted } from "vue"
 import { useInventoryStore } from "./stores/inventory"
 import type {Item} from "./types/Item"
+import Profile from "./components/Profile.vue"
 
 const store = useInventoryStore()
 
@@ -27,15 +28,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="inventory">
-    <div v-for="item in store.items" :key="item.id" class="inventory__item">
-      <img :src="item.icon" alt="">
-      <p>{{ item.name }}</p>
+  <div class="app__wrapper">
+    <Profile />
+    <div class="inventory">
+      <div v-for="item in store.items" :key="item.id" class="inventory__item">
+        <img :src="item.icon" alt="">
+        <p>{{ item.name }}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.app__wrapper {
+  max-width: 849px;
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 236px 1fr;
+  column-gap: 24px;
+}
+
 .inventory {
   display: flex;
   gap: 1rem;
