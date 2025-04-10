@@ -13,7 +13,11 @@
         draggable="true"
         @dragstart="onDragStart(index)"
       >
-        <img :src="slot.icon" alt="">
+        <img
+          :src="slot.icon"
+          class="inventory__item-img"
+          alt="">
+        <div class="inventory__item-quantity">{{ slot.quantity }}</div>
       </div>
     </div>
   </div>
@@ -35,18 +39,21 @@ onMounted(() => {
         name: '1 test name',
         description: '1 test desc',
         icon: '/icons/item-1.png',
+        quantity: 4
       },
       {
         id: '2',
         name: '2 test name',
         description: '2 test desc',
-        icon: '/icons/item-2.png'
+        icon: '/icons/item-2.png',
+        quantity: 2
       },
       {
         id: '3',
         name: '3 test name',
         description: '3 test desc',
-        icon: '/icons/item-3.png'
+        icon: '/icons/item-3.png',
+        quantity: 5
       }
     ]
     store.setItems(initialItems)
@@ -82,6 +89,7 @@ const onDrop = (targetIndex: number) => {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   &:nth-last-child(-n+5) {
     border-bottom: none;
@@ -94,12 +102,27 @@ const onDrop = (targetIndex: number) => {
 .inventory__item {
   text-align: center;
   cursor: grab;
+  
+}
 
-  img {
-    width: 54px;
-    height: 54px;
-    display: block;
-    margin: 0 auto;
-  }
+.inventory__item-img {
+  width: 54px;
+  height: 54px;
+  display: block;
+  margin: 0 auto;
+}
+
+.inventory__item-quantity {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-weight: 500;
+  font-size: 10px;
+  text-align: center;
+  color: rgba(#fff, 0.4);
+  border: 1px solid #4d4d4d;
+  border-bottom: 0;
+  border-radius: 6px 0 0 0;
+  padding: 2px 4px;
 }
 </style>
