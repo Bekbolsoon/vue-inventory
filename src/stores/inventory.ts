@@ -27,8 +27,20 @@ export const useInventoryStore = defineStore("inventory", () => {
         })
     }
 
-    const removeItem = (id: string) => {
-        slots.value = slots.value.map(item => item && item.id === id ? null :item)
+    const decreaseItemQuantity = (id: string, count: number) => {
+        for (let i = 0; i < slots.value.length; i++) {
+            const item = slots.value[i]
+            if (item && item.id === id) {
+                const newQuantity = (item.quantity || 1) - count
+
+                if (newQuantity <= 0) {
+                    slots.value[i] = null
+                } else {
+                    slots.value[i] = { ...item, quantity: newQuantity }
+                }
+                break
+            }
+        }
     }
 
     const moveItem = (fromIndex: number, toIndex: number) => {
@@ -42,7 +54,7 @@ export const useInventoryStore = defineStore("inventory", () => {
     return {
         slots,
         setItems,
-        removeItem,
+        decreaseItemQuantity,
         moveItem,
     }
 })
