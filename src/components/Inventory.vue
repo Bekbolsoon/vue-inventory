@@ -1,35 +1,42 @@
 <template>
   <div class="inventory">
     <div
-      v-for="(slot, index) in store.slots"
+      v-for="(item, index) in items"
       :key="index"
       class="inventory__slot"
       @dragover.prevent
       @drop="onDrop(index)"
+      @click="selectItem(index)"
     >
       <div
-        v-if="slot"
+        v-if="item"
         class="inventory__item"
         draggable="true"
         @dragstart="onDragStart(index)"
       >
         <img
-          :src="slot.icon"
+          :src="item.icon"
           class="inventory__item-img"
-          alt="">
-        <div class="inventory__item-quantity">{{ slot.quantity }}</div>
+          alt="icon">
+        <div class="inventory__item-quantity">{{ item.quantity }}</div>
       </div>
     </div>
+
+    <ItemModal :item="selectedItem" @close="selectedItem = null" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue"
+import {computed, onMounted, ref} from "vue"
 import {useInventoryStore} from "@/stores/inventory";
 import type {Item} from "@/types/Item"
+import ItemModal from "@/components/ItemModal.vue";
 
 const store = useInventoryStore()
 const draggedIndex = ref<number | null>(null)
+const selectedItem = ref<Item | null>(null)
+
+const items = computed(() => store.slots)
 
 onMounted(() => {
   if (store.slots.filter(Boolean).length === 0) {
@@ -60,6 +67,12 @@ onMounted(() => {
   }
 })
 
+const selectItem = (index: number) => {
+  if (items.value[index]) {
+    selectedItem.value = items.value[index]
+  }
+}
+
 const onDragStart = (index: number) => {
   draggedIndex.value = index
 }
@@ -81,6 +94,8 @@ const onDrop = (targetIndex: number) => {
   border-radius: 12px;
   border: 1px solid #4d4d4d;
   max-height: 500px;
+  position: relative;
+  overflow: hidden;
 }
 
 .inventory__slot {

@@ -19,6 +19,10 @@ body {
   height: 26px;
   width: 100%;
   margin-bottom: 8px;
+
+  &_modal {
+    height: 30px;
+  }
 }
 
 .skeleton-end-text {
@@ -31,6 +35,8 @@ body {
 .w-170 { width: 170px }
 .w-160 { width: 160px }
 .w-140 { width: 140px }
+.w-180 { width: 180px }
+.w-80 { width: 80px }
 
 @keyframes pulse {
   0% { background-color: #2a2a2a; }
