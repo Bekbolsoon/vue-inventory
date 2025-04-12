@@ -12,7 +12,9 @@
         v-if="item"
         class="inventory__item"
         draggable="true"
-        @dragstart="onDragStart(index)"
+        @dragstart="onDragStart(index, $event)"
+        @drag="onDrag($event)"
+        @dragend="onDragEnd"
       >
         <img
           :src="item.icon"
@@ -73,8 +75,31 @@ const selectItem = (index: number) => {
   }
 }
 
-const onDragStart = (index: number) => {
+const dragImage = ref<HTMLElement | null>(null)
+
+const onDragStart = (index: number, event: DragEvent) => {
   draggedIndex.value = index
+
+  const itemEl = (event.target as HTMLElement).cloneNode(true) as HTMLElement
+  itemEl.classList.add('drag-preview')
+  document.body.appendChild(itemEl)
+  dragImage.value = itemEl
+
+  event.dataTransfer?.setDragImage(new Image(), 0, 0)
+}
+
+const onDrag = (event: DragEvent) => {
+  if (dragImage.value && event.clientX && event.clientY) {
+    dragImage.value.style.left = `${event.clientX}px`
+    dragImage.value.style.top = `${event.clientY}px`
+  }
+}
+
+const onDragEnd = () => {
+  if (dragImage.value) {
+    dragImage.value.remove()
+    dragImage.value = null
+  }
 }
 
 const onDrop = (targetIndex: number) => {
@@ -105,6 +130,11 @@ const onDrop = (targetIndex: number) => {
   align-items: center;
   justify-content: center;
   position: relative;
+  cursor: url("/icons/cursor-hand-hover.svg"), pointer;
+
+  &:hover {
+    background: #2f2f2f;
+  }
 
   &:nth-last-child(-n+5) {
     border-bottom: none;
@@ -116,8 +146,6 @@ const onDrop = (targetIndex: number) => {
 
 .inventory__item {
   text-align: center;
-  cursor: grab;
-  
 }
 
 .inventory__item-img {
@@ -139,5 +167,16 @@ const onDrop = (targetIndex: number) => {
   border-bottom: 0;
   border-radius: 6px 0 0 0;
   padding: 2px 4px;
+}
+
+.drag-preview {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+  transform: translate(-100%, -100%);
+  transition: transform 0.1s ease;
+  opacity: 0.1;
+  width: 54px;
+  height: 54px;
 }
 </style>

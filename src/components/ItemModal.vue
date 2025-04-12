@@ -134,6 +134,10 @@ function confirmDelete() {
   border: none;
   cursor: pointer;
   outline: none;
+
+  &:hover {
+    background: #f88;
+  }
 }
 
 .modal__delete-form {
@@ -207,5 +211,9 @@ function confirmDelete() {
   border: none;
   cursor: pointer;
   outline: none;
+
+  &:hover {
+    background: #f88;
+  }
 }
 </style>
