@@ -47,21 +47,21 @@ onMounted(() => {
         id: '1',
         name: '1 test name',
         description: '1 test desc',
-        icon: '/icons/item-1.png',
+        icon: `${import.meta.env.BASE_URL}icons/item-1.png`,
         quantity: 4
       },
       {
         id: '2',
         name: '2 test name',
         description: '2 test desc',
-        icon: '/icons/item-2.png',
+        icon: `${import.meta.env.BASE_URL}icons/item-2.png`,
         quantity: 2
       },
       {
         id: '3',
         name: '3 test name',
         description: '3 test desc',
-        icon: '/icons/item-3.png',
+        icon: `${import.meta.env.BASE_URL}icons/item-3.png`,
         quantity: 5
       }
     ]
