@@ -75,31 +75,37 @@ const selectItem = (index: number) => {
   }
 }
 
-const dragImage = ref<HTMLElement | null>(null)
+
+const dragWrapper = document.createElement("div")
+dragWrapper.classList.add('inventory__drag')
+const emptyImage = new Image()
+emptyImage.src =
+  'data:image/svg+xml;base64,' +
+  btoa('<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"></svg>')
 
 const onDragStart = (index: number, event: DragEvent) => {
   draggedIndex.value = index
 
   const itemEl = (event.target as HTMLElement).cloneNode(true) as HTMLElement
-  itemEl.classList.add('drag-preview')
-  document.body.appendChild(itemEl)
-  dragImage.value = itemEl
+  dragWrapper.innerHTML = ''
+  dragWrapper.appendChild(itemEl)
+  document.body.appendChild(dragWrapper)
 
-  event.dataTransfer?.setDragImage(new Image(), 0, 0)
+  dragWrapper.style.left = `${event.clientX}px`
+  dragWrapper.style.top = `${event.clientY}px`
+
+  event.dataTransfer?.setDragImage(emptyImage, 0, 0)
 }
 
 const onDrag = (event: DragEvent) => {
-  if (dragImage.value && event.clientX && event.clientY) {
-    dragImage.value.style.left = `${event.clientX}px`
-    dragImage.value.style.top = `${event.clientY}px`
+  if (event.clientX && event.clientY) {
+    dragWrapper.style.left = `${event.clientX}px`
+    dragWrapper.style.top = `${event.clientY}px`
   }
 }
 
 const onDragEnd = () => {
-  if (dragImage.value) {
-    dragImage.value.remove()
-    dragImage.value = null
-  }
+  dragWrapper.remove()
 }
 
 const onDrop = (targetIndex: number) => {
@@ -110,7 +116,7 @@ const onDrop = (targetIndex: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .inventory {
   display: grid;
   grid-template-columns: repeat(5, 105px);
@@ -169,14 +175,17 @@ const onDrop = (targetIndex: number) => {
   padding: 2px 4px;
 }
 
-.drag-preview {
+.inventory__drag {
+  padding: 25px 23px;
+  width: 105px;
+  height: 100px;
+  background: #262626;
+  border: 1px solid #4d4d4d;
+  border-radius: 24px;
   position: fixed;
   pointer-events: none;
   z-index: 1000;
-  transform: translate(-100%, -100%);
+  transform: translate(-82px, -56px);
   transition: transform 0.1s ease;
-  opacity: 0.1;
-  width: 54px;
-  height: 54px;
 }
 </style>

@@ -13,9 +13,6 @@ import TempBlock from "@/components/TempBlock.vue";
 </script>
 
 <style lang="scss" scoped>
-.app {
-  margin: 0 auto;
-}
 .app__wrapper {
   max-width: 849px;
   padding: 32px;

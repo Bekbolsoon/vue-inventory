@@ -121,7 +121,7 @@ function confirmDelete() {
 }
 
 .modal__btn-delete {
-  //font-family: var(--second-family);
+  font-family: 'SF Pro', sans-serif;
   font-weight: 400;
   font-size: 14px;
   text-align: center;
@@ -191,7 +191,7 @@ function confirmDelete() {
   border-radius: 8px;
   padding: 8px 19.5px;
   background: #fff;
-  //font-family: var(--second-family);
+  font-family: 'SF Pro', sans-serif;
   font-weight: 400;
   font-size: 14px;
   color: #2d2d2d;
@@ -204,7 +204,7 @@ function confirmDelete() {
   background: #fa7272;
   border-radius: 8px;
   padding: 8px 15px;
-  //font-family: var(--second-family);
+  font-family: 'SF Pro', sans-serif;
   font-weight: 400;
   font-size: 14px;
   color: #fff;
